@@ -1,0 +1,56 @@
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		/**
+		 * 由于最后是行输出，自然而然就想到了字符串，由于需要对字符串进行修改操作，所以想到了stringbuilder类。
+		 */
+		Scanner sc = new Scanner(System.in);
+		int a = sc.nextInt();
+		int b = sc.nextInt();
+		sc.close();
+		/**
+		 * 首先创建用于用户输入的接口，为了防止内存溢出，在使用输入接口之后调用scanner的close方法。
+		 */
+		int sum = a + b;
+		if(sum<0) {
+			System.out.print("-");
+			sum = 0-sum;
+		}
+		/**
+		 * 设置sum值，以及为sum值取绝对值。
+		 * 定义一个String类型的变量，通过valueOf方法取sum的值赋值给sumstr。
+		 */
+		String sumstr = String.valueOf(sum);
+		/**
+		 * 实例化一个stringbuilder对象，由于IF语句中都用到了stringBuilder对象，所以不用再次多次实例化
+		 */
+		StringBuilder stringBuilder;
+		/**
+		 * 设置sumstr变量的长度
+		 */
+		int length = sumstr.length();
+		/**
+		 * 基本思路：由于最后是横向输出，且需要做字符串的分割，自然就想到stringbuilder类。
+		 * 其中进行分类讨论，length实际上是该sum值的位数。
+		 * 调用Stringbuilder类的insert方法，在位数减三后插入逗号。
+		 * 当位数超过六位时，先在首位数位减三后插入逗号，再在首位数位减六后插入逗号
+		 * 最后输出时调用tostring方法转为字符串输出。
+		 */
+		if (length<=3) {
+			System.out.println(sumstr);
+		}
+		else if(length<=6){
+		stringBuilder = new StringBuilder(sumstr);
+		stringBuilder.insert(length-3, ",");
+		System.out.println(stringBuilder.toString());
+		}
+		else{
+		stringBuilder = new StringBuilder(sumstr);
+		stringBuilder.insert(length-3, ",");
+		stringBuilder.insert(length-6, ",");
+		System.out.println(stringBuilder.toString());
+		}
+	}
+
+}
