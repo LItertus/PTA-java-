@@ -1,34 +1,54 @@
 import java.lang.System;
 import java.io.*;
 
+//这个题目说起来是算法4的拓展，但实际上用java的难度比用C要大很多，做的时候开始用的Scanner
+//但是考虑到Scanner用时太大，不符合题设要求，遂采用了BufferedReader。
+//考虑到不同的测试情况都会WA，所以尝试了很长时间，中间有借鉴别人写的java，但最后自己还是完全理解了才写出来自己的东西
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        //声明一个BufferedReader类型的对象，通过System.in进行初始化
+        //inputSteamReader是字节输出，而BufferedReader则进行整行读取，所以实际上是用System.in进行InputSteamReader的初始化
         br.readLine();
         String[] array_1 = br.readLine().split(" ");
+        //声明一个字符串数组，通过readLine方法读取输入的值放入数组内部，并通过split方法将整个数组按照空格进行分割
         int i;
         int MaxSum = Integer.MIN_VALUE;
+        //将MaxSum设置成INT的最小值，有负数和0同时存在的情况时MaxSum不能为0，否则会WA
         int ThisSum = 0, leftindex = 0, rightindex = array_1.length-1, tempindex = 0;
+        //ThisSum是当前的值，leftindex和rightindex是左右的下标，tempindex是在ThisSum<0,进行重新赋值之后的计数
+        //此处rightindex必须设为数组最大值，不然在全部为负数的情况下会WA
         for (i = 0; i < array_1.length; i++) {
+            //数组遍历
             Integer t = Integer.valueOf(array_1[i]);
+            //强制转换一个t变量用于存放字符串数组的Int值
             ThisSum += t;
             if (ThisSum >= 0) {
                 if (ThisSum > MaxSum) {
                     MaxSum =ThisSum ;
+                    //更新MaxSum的值
                     if (leftindex <= tempindex) {
                         leftindex =tempindex;
+                        //如果leftindex比tempindex小，则说明tempindex有更新，此时更新leftindex的值
+                        //由于ThisSum>MaxSum才会触发这个条件判断，所以实际上就满足了题设寻找最小值下标的条件
+                        //因为即使有相等的最大值，也不会进入判断语句
                     }
                     rightindex = i;
+                    //将rightindex指向更新后的i
                 }
             } else if (ThisSum<0){
+                //如果THisSum小于0，则直接抛弃，因为负数不可能使最大值变得更大
                 ThisSum = 0;
                 tempindex = i + 1;
+                //tempindex用于计数，由于在之后的情况下它的值并不会赋给leftindex，所以其实只用到了一次
             }
         }
         if (MaxSum <0){
             MaxSum = 0;
+            //设置这个是因为前面设置的最小值为负数，为了避免出错的情况，强行将MaxSum设为0
         }
         br.close();
+        //I/O流在用完之后必须要关闭，不然会一直持续到程序结束
         System.out.print(MaxSum + " ");
         System.out.print(Integer.valueOf(array_1[leftindex]) + " ");
         System.out.print(Integer.valueOf((array_1[rightindex])));
